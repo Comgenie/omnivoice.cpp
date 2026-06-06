@@ -378,6 +378,18 @@ static int run_tts_via_ov(const char * model_path,
                         return 1;
                     }
                 }
+
+                if (stream_by_line && flush) {
+                    // When stream-by-line is active, we treat every input line as its own generation.
+                    // Output a new RIFF header so each audio generation can be used independently
+                    // and boundaries can be detected more easily.
+                    wav_stream_close(&ws);
+
+                    if (!wav_stream_open_stdout(&ws, 24000, wav_fmt)) {
+                        ov_free(ov);
+                        return 1;
+                    }
+                }
             }
             if (feof(in) || ferror(in)) {
                 break;
