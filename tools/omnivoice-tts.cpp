@@ -388,6 +388,7 @@ static int run_tts_via_ov(const char * model_path,
                 }
 
                 if (flush) {
+                    fprintf(stderr, "[OmniVoice-TTS] Flushed output\n");
                     need_header = true;
                 }
             }
